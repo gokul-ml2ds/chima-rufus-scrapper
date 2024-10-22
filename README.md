@@ -87,6 +87,9 @@ if __name__ == "__main__":
 ## Using the API
 ### Send a POST request to the /scrape endpoint with the URL and instructions.
 
+
+![API Overview](docs/images/api.png)
+
 Navigate to http://127.0.0.1:8000/docs# to access the interactive Swagger UI documentation.
 
 

@@ -91,7 +91,7 @@ Navigate to http://127.0.0.1:8000/docs# to access the interactive Swagger UI doc
 
 
 ```bash
-curl -X POST "http://127.0.0.1:8000/scrape" -H "Content-Type: application/json" -d {  'url": "https://datascience.virginia.edu/news/how-much-do-data-scientists-need-know-about-statistics","instructions": "Find out key terms in data science"}'
+curl -X POST "http://127.0.0.1:8000/scrape" -H "Content-Type: application/json" -d {"url": "https://www.withchima.com/","instructions": "Find information about product features and customer FAQs"}'
 ```
 
 

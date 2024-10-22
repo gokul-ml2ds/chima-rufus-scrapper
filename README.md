@@ -87,9 +87,13 @@ if __name__ == "__main__":
 ## Using the API
 ### Send a POST request to the /scrape endpoint with the URL and instructions.
 
+Navigate to http://127.0.0.1:8000/docs# to access the interactive Swagger UI documentation.
+
+
 ```bash
-curl -X POST "http://127.0.0.1:8000/scrape" -H "Content-Type: application/json" -d '{"url": "https://www.sfgov.com", "instructions": "Find information about HR policies and FAQs."}'
+curl -X POST "http://127.0.0.1:8000/scrape" -H "Content-Type: application/json" -d {  'url": "https://datascience.virginia.edu/news/how-much-do-data-scientists-need-know-about-statistics","instructions": "Find out key terms in data science"}'
 ```
+
 
 ## Testing
 ### Run tests using PyTest:

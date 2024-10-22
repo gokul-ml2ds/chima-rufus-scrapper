@@ -81,3 +81,25 @@ def main():
 
 if __name__ == "__main__":
     main()
+```
+
+
+## Using the API
+### Send a POST request to the /scrape endpoint with the URL and instructions.
+
+```bash
+curl -X POST "http://127.0.0.1:8000/scrape" -H "Content-Type: application/json" -d '{"url": "https://www.sfgov.com", "instructions": "Find information about HR policies and FAQs."}'
+```
+
+## Testing
+### Run tests using PyTest:
+
+```bash
+pytest
+```
+
+## License
+### MIT License
+
+## Acknowledgements
+### Built with ❤️ by Gokul

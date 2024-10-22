@@ -7,10 +7,12 @@
 ## Features
 
 - **Intelligent Crawling:** Navigates websites based on specific instructions.
+- **Automatic Switching:** Utilises selenium for webpages with javascript elements/infinfite website.
 - **Selective Scraping:** Extracts only relevant data as per user prompts.
 - **Document Synthesis:** Converts extracted data into structured formats (e.g., JSON).
 - **API Integration:** Provides an intuitive API for seamless integration.
 - **Error Handling:** Robust mechanisms to handle inaccessible pages or structural changes.
+- **Multithreaded Crawling and Parsing:** Utilizes multithreading, allowing simultaneous crawling of multiple URLs and parallel parsing of extracted content for faster data processing.
 
 ## Technology Stack
 

@@ -6,7 +6,8 @@ import json
 
 app = FastAPI(
     title="Rufus API",
-    description="API for Rufus Web Data Extraction Tool",
+    description="API for Rufus Web Data Extraction Tool for user-defined prompts .",
+
     version="1.0"
 )
 

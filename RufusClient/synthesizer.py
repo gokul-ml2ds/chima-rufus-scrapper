@@ -44,12 +44,15 @@ class Synthesizer:
                 
                 # Attempt to parse JSON
                 try:
+                    # Optional: Clean the synthesized text (e.g., remove newlines or excessive whitespace)
+                    synthesized_text = synthesized_text.replace('\n', ' ').strip()
+
                     structured_data = json.loads(synthesized_text)
                     return structured_data
-                except json.JSONDecodeError:
-                    self.logger.error("Failed to parse synthesized text into JSON.")
-                    self.logger.error(f"Synthesized Text: {synthesized_text}")  # Log the raw text for inspection
+                except json.JSONDecodeError as e:
+                    self.log_json_error(synthesized_text, e)
                     return {"raw_output": synthesized_text}  # Return the raw output for debugging
+
 
             except openai.error.RateLimitError as e:
                 self.logger.warning(f"Rate limit reached. Attempt {attempt + 1} of {retries}.")
@@ -60,3 +63,9 @@ class Synthesizer:
 
         self.logger.error("Max retries reached. Unable to synthesize.")
         return {}
+    
+    def log_json_error(self, synthesized_text, error):
+        self.logger.error("Failed to parse synthesized text into JSON.")
+        self.logger.error(f"JSONDecodeError: {error}")  # Log the specific error
+        self.logger.error(f"Synthesized Text: {synthesized_text}")  # Log the raw text for inspection
+        self.logger.error("Please check the format of the synthesized text for any issues.")

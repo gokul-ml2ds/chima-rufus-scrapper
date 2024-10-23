@@ -101,14 +101,15 @@ curl -X POST "http://127.0.0.1:8000/scrape" -H "Content-Type: application/json" 
 
 
 ## Testing
-### Run tests using PyTest:
 
 ```bash
-pytest
+python -m unittest discover -s tests -p "test_rufus.py"
+python -m unittest discover -s tests -p "test_parser.py"
+python -m unittest discover -s tests -p "test_crawler.py"
 ```
 
 ## License
-### MIT License
+MIT License
 
 ## Acknowledgements
-### Built with ❤️ by Gokul
+ Built with ❤️ by Gokul

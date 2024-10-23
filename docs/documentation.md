@@ -1,76 +1,66 @@
-# Rufus Documentation
+# Documentation on Rufus
 
-## Introduction
+## How Rufus Works:
 
-**Rufus** is an intelligent web data extraction tool designed to prepare web data for Retrieval-Augmented Generation (RAG) agents. It intelligently crawls websites based on user-defined prompts, extracts relevant data, and synthesizes it into structured documents suitable for RAG systems.
+### Intelligent Crawling
+Rufus navigates websites based on specific user-defined instructions, ensuring targeted data extraction.
 
-## Components
+### Automatic Switching
+It uses Selenium when necessary to handle dynamic content effectively.
 
-### 1. Crawler
+### Selective Scraping
+Extracts only the data relevant to the user's needs, minimizing unnecessary data processing.
 
-- **Purpose:** Navigates through the website starting from the base URL, following links up to a specified depth, and collects URLs to be scraped.
-- **File:** `RufusClient/crawler.py`
+### Document Synthesis
+This process converts extracted data into structured formats like JSON, making it ready for further processing or integration.
 
-### 2. Parser
+### API Integration
+Provides an intuitive API for easy integration into existing systems or workflows.
 
-- **Purpose:** Extracts relevant data (e.g., FAQs, pricing) from the fetched HTML content based on the user's instructions.
-- **File:** `RufusClient/parser.py`
+## Integration with RAG
 
-### 3. Synthesizer
+### Step 1: Data Collection with Rufus
 
-- **Purpose:** Uses OpenAI's GPT models to synthesize the extracted data into a structured format (e.g., JSON) suitable for RAG systems.
-- **File:** `RufusClient/synthesizer.py`
+#### Define Requirements
+- Determine what kind of data your RAG system needs. This could include topics, keywords, or specific data types (e.g., text, images).
+- Define clear, actionable user prompts for Rufus, tailored to extract this data.
 
-### 4. Client
+#### Setup Rufus
+- Configure Rufus with the necessary instructions to target and extract relevant data from predefined websites or domains. Ensure you have set up Rufus’s environment by following the setup instructions in the repository.
 
-- **Purpose:** Serves as the entry point, coordinating the crawling, parsing, and synthesizing processes.
-- **File:** `RufusClient/client.py`
+#### Run Data Extraction
+- Execute Rufus either through its API or by running it as a standalone tool to crawl and extract data.
+- Ensure the data is saved in an appropriate format, such as JSON, which is structured to include necessary fields like URL, extracted content, and metadata.
 
-### 5. API
+### Step 2: Preprocessing Data
 
-- **Purpose:** Provides a RESTful interface for developers to interact with Rufus.
-- **File:** `api/main.py`
+#### Data Cleaning
+- Filter and clean the extracted data to remove any irrelevant or redundant information.
+- Standardize the format by ensuring consistency in encoding, date formats, and other specifics.
 
-## Usage
+#### Data Transformation
+- Convert the cleaned data into a suitable format for the RAG system. This might involve transforming scraped HTML content into plain text.
+- Tokenize text and apply other NLP preprocessing techniques required by your model.
 
-### Using RufusClient Directly
+### Step 3: Integrating with the RAG Model
 
-1. **Import RufusClient:**
+#### Data Ingestion
+- Import the preprocessed data into the database or datastore that your RAG model will access for retrieval.
+- Organize the data in a way that optimizes retrieval performance, such as indexing or segmenting the data based on query relevance.
 
-    ```python
-    from RufusClient.client import RufusClient
-    ```
+#### Retrieval Setup
+- Adjust the retrieval component of the RAG model to query this database effectively. This could involve defining search parameters or weights based on the importance of different data fields.
 
-2. **Initialize and Scrape:**
+#### Response Generation
+- Configure the generation component of the RAG model to utilize the retrieved data. Ensure that the context provided by the retrieval component is adequately influencing the generation process.
+- Fine-tune the model to improve coherence, relevance, and accuracy of the generated content based on initial outputs and feedback.
 
-    ```python
-    instructions = "Find information about HR policies and FAQs."
-    client = RufusClient(user_prompt=instructions)
-    documents = client.scrape("https://www.sfgov.com")
-    print(documents)
-    ```
+### Step 4: Continuous Evaluation and Improvement
 
-### Using the API
+#### Monitoring
+- Regularly evaluate the performance of the RAG system in terms of response relevance and accuracy.
+- Monitor the extraction capabilities of Rufus to ensure it continues to provide high-quality, relevant data as web content evolves.
 
-1. **Start the API Server:**
-
-    ```bash
-    uvicorn api.main:app --reload
-    ```
-
-2. **Access API Documentation:**
-
-    Open your browser and navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) to access the interactive Swagger UI documentation. You can test API endpoints directly from here.
-
-3. **Send a Scrape Request:**
-
-    ```bash
-    curl -X POST "http://127.0.0.1:8000/scrape" -H "Content-Type: application/json" -d '{"url": "https://www.sfgov.com", "instructions": "Find information about HR policies and FAQs."}'
-    ```
-
-## Testing
-
-Run the test suite using PyTest:
-
-```bash
-pytest
+#### Iterative Improvement
+- Use feedback from system outputs and user interactions to refine the data extraction and preprocessing steps.
+- Continuously train and update the RAG model to adapt to new data and changing information needs.

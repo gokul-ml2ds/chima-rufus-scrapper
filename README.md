@@ -22,7 +22,7 @@
 - **API Framework:** FastAPI
 - **Data Storage:** JSON
 - **Version Control:** GitHub
-- **Testing:** PyTest
+- **Testing:** PyTest, unittest
 - **Environment Management:** virtualenv
 
 ## Setup Instructions

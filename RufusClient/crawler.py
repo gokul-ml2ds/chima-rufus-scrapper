@@ -1,8 +1,8 @@
+import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 from tqdm import tqdm
 import logging
-import requests
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -18,10 +18,7 @@ class Crawler:
         self.to_visit = [(base_url, 0)]
         self.logger = self.setup_logger()
         self.keywords = self.extract_keywords(user_prompt)  # Extract keywords from the user prompt
-        
-        # Initialize Selenium only if needed
-        self.use_selenium = False  # Toggle to use Selenium when needed
-        self.driver = None
+        self.driver = None  # Selenium WebDriver, initialized only if needed
 
     def setup_logger(self):
         logger = logging.getLogger(__name__)
@@ -34,22 +31,17 @@ class Crawler:
         return logger
 
     def extract_keywords(self, prompt):
-        # Extract keywords from the user prompt; this can be improved with NLP techniques
         return [word.strip() for word in prompt.split()]
 
     def initialize_selenium(self):
-        try:
+        if not self.driver:  # Initialize only if not already done
             chrome_options = Options()
             chrome_options.add_argument("--headless")
             chrome_options.add_argument("--disable-gpu")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
-
             self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
             self.logger.info("Selenium WebDriver initialized successfully.")
-        except Exception as e:
-            self.logger.error(f"Failed to initialize Selenium WebDriver: {e}")
-            self.driver = None
 
     def is_valid(self, url):
         parsed = urlparse(url)
@@ -71,43 +63,40 @@ class Crawler:
         return base_domain == target_domain
 
     def is_relevant(self, content):
-        # Check if the content contains any of the keywords
         content = content.lower()  # Convert to lowercase for case-insensitive matching
         return any(keyword in content for keyword in self.keywords)
 
     def fetch(self, url):
-        # First, try to fetch using requests
         try:
             headers = {'User-Agent': 'RufusBot/1.0'}
             response = requests.get(url, headers=headers, timeout=10)
             response.raise_for_status()
 
-            # If the response is empty, switch to Selenium
-            if not response.text.strip():
+            if not response.text.strip():  # Check if the response is empty
                 self.logger.info(f"Empty response from {url}. Switching to Selenium.")
-                self.use_selenium = True  # Switch to Selenium if empty response is detected
-                return self.fetch_with_selenium(url)
+                return self.fetch_with_selenium(url)  # Fallback to Selenium
 
             return response.text
-
-        except requests.HTTPError as http_err:
-            self.logger.error(f"HTTP error occurred while fetching {url}: {http_err}")
-        except requests.ConnectionError as conn_err:
-            self.logger.error(f"Connection error occurred while fetching {url}: {conn_err}")
-        except requests.Timeout as timeout_err:
-            self.logger.error(f"Timeout error occurred while fetching {url}: {timeout_err}")
-        except requests.RequestException as req_err:
-            self.logger.error(f"General error occurred while fetching {url}: {req_err}")
-        return None
+        except requests.exceptions.RequestException as e:
+            self.logger.error(f"Error occurred while fetching {url} with requests: {e}")
+            self.logger.info(f"Attempting to fetch using Selenium due to error.")
+            return self.fetch_with_selenium(url)  # Fallback to Selenium on any error
 
     def fetch_with_selenium(self, url):
-        if not self.driver:
-            self.initialize_selenium()  
+        self.initialize_selenium()
         try:
             self.driver.get(url)
-            time.sleep(3)  # Wait for the page to load; consider implementing a better wait strategy
-            content = self.driver.page_source
-            return content
+            time.sleep(3)  # Wait for the page to load completely
+            # Handle infinite scroll if necessary
+            last_height = self.driver.execute_script("return document.body.scrollHeight")
+            while True:
+                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(3)
+                new_height = self.driver.execute_script("return document.body.scrollHeight")
+                if new_height == last_height:
+                    break
+                last_height = new_height
+            return self.driver.page_source
         except Exception as e:
             self.logger.error(f"Error fetching {url} with Selenium: {e}")
             return None
@@ -119,7 +108,7 @@ class Crawler:
                 if current_url in self.visited or depth > self.max_depth:
                     pbar.update(1)  # Update progress bar for skipped URLs
                     continue
-                
+
                 self.logger.info(f"Crawling: {current_url} at depth {depth}")
                 content = self.fetch(current_url)
 
@@ -129,13 +118,11 @@ class Crawler:
                     for link in links:
                         if link not in self.visited and self.is_relevant(link):  # Check if the link is relevant
                             self.to_visit.append((link, depth + 1))
-                else:
-                    self.logger.info(f"Skipped {current_url} - not relevant or no content.")
 
                 pbar.update(1)  # Update progress bar after processing a URL
 
         # Close the Selenium driver if used
         if self.driver:
             self.driver.quit()
-        
+
         return self.visited

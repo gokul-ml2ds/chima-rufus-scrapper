@@ -40,11 +40,11 @@ class Synthesizer:
                 self.logger.info(f"API Request: {messages}")
                 self.logger.info(f"API Response: {response}")
 
-                synthesized_text = response.choices[0].message['content'].strip()  # Adjusted for the new response format
+                synthesized_text = response.choices[0].message['content'].strip()  
                 
                 # Attempt to parse JSON
                 try:
-                    # Optional: Clean the synthesized text (e.g., remove newlines or excessive whitespace)
+                   
                     synthesized_text = synthesized_text.replace('\n', ' ').strip()
 
                     structured_data = json.loads(synthesized_text)

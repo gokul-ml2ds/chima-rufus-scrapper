@@ -23,8 +23,14 @@ class TestCrawler(unittest.TestCase):
     def test_crawl(self):
         crawled_urls = self.crawler.crawl()
         self.assertIn("https://www.example.com", crawled_urls)
-        # Example.com has minimal links
+        # Example.com has minimal links, adjust if needed based on real structure
         self.assertEqual(len(crawled_urls), 1)
+
+    def test_multithreaded_crawl(self):
+        # Modify max_depth or base_url for testing multithreading effectively
+        self.crawler.max_depth = 2  # Increase depth to test multithreaded behavior
+        crawled_urls = self.crawler.crawl()
+        self.assertGreater(len(crawled_urls), 1)  # Expect more than 1 URL to be crawled
 
 if __name__ == "__main__":
     unittest.main()

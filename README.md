@@ -108,8 +108,5 @@ python -m unittest discover -s tests -p "test_parser.py"
 python -m unittest discover -s tests -p "test_crawler.py"
 ```
 
-## License
-MIT License
-
 ## Acknowledgements
  Built with ❤️ by Gokul

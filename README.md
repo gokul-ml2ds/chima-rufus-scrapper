@@ -1,5 +1,3 @@
-# chima-rufus-scrapper
-
 # Rufus
 
 **Rufus** is an intelligent web data extraction tool designed to prepare web data for Retrieval-Augmented Generation (RAG) agents. It intelligently crawls websites based on user-defined prompts, extracts relevant data, and synthesizes it into structured documents suitable for RAG systems.
@@ -30,8 +28,8 @@
 1. **Clone the Repository:**
 
     ```bash
-    git clone https://github.com/yourusername/Rufus.git
-    cd Rufus
+    git clone https://github.com/gokul-ml2ds/chima-rufus-scrapper.git
+    cd chima-rufus-scrapper
     ```
 
 2. **Set Up Virtual Environment:**

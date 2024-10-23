@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 .env
 output.json
+docs/.DS_Store

@@ -26,7 +26,7 @@ class Parser:
 
             # Call OpenAI's API
             response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",  # Ensure you're using the correct model
+                model="gpt-3.5-turbo",  
                 messages=messages,
                 max_tokens=1500,
                 temperature=0.3,

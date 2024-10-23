@@ -4,7 +4,7 @@ import logging
 import time  # Import time for sleep during retry
 
 class Synthesizer:
-    def __init__(self, extracted_data, user_prompt, api_key, model="gpt-3.5-turbo"):
+    def __init__(self, extracted_data, user_prompt, api_key, model="gpt-4o-mini"):
         self.extracted_data = extracted_data
         self.user_prompt = user_prompt
         self.api_key = api_key
@@ -31,7 +31,7 @@ class Synthesizer:
                 response = openai.ChatCompletion.create(
                     model=self.model,
                     messages=messages,
-                    max_tokens=1000,
+                    max_tokens=500,
                     temperature=0.3,
                     n=1
                 )

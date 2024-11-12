@@ -7,7 +7,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager 
 
 class Crawler:
     def __init__(self, base_url, user_prompt, max_depth=3):
@@ -57,7 +57,11 @@ class Crawler:
                 links.add(full_url)
         return links
 
-    def same_domain(self, url):
+    def same_domain(self, url):   
+    # filters content based on relevance, 
+    # ensuring that the crawler processes only the content that matches the base url.
+
+
         base_domain = urlparse(self.base_url).netloc
         target_domain = urlparse(url).netloc
         return base_domain == target_domain

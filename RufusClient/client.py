@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 load_dotenv()
 
 class RufusClient:
-    def __init__(self, user_prompt, max_depth=1):
+    def __init__(self, user_prompt, max_depth=2):
         self.user_prompt = user_prompt
         self.max_depth = max_depth
         self.openai_api_key = os.getenv('OPENAI_API_KEY')
